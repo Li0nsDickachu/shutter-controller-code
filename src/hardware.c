@@ -6,6 +6,7 @@
 #include <util/delay.h>
 #include <stdbool.h>
 #include "defines.h"
+#include "hardware.h"
 
 void delay_ms(double ms) {
     _delay_ms(ms);
@@ -41,9 +42,19 @@ void power_off() {
 
 #define INTERRUPT_FREQ ((uint32_t)F_CPU / 64 / (1 << 8))
 
+static enum events occurred_events = 0;
+
+enum events get_and_clear_button_events() {
+    enum events retval = occurred_events;
+    occurred_events = 0;
+
+    return retval;
+}
+
 static void poll_buttons() {
     bool butt1 = (INPUT_BUTT1 & (1 << PIN_BUTT1)) == 0;
     bool butt2 = (INPUT_BUTT2 & (1 << PIN_BUTT2)) == 0;
+
     static int counter1 = 0;
     static int counter2 = 0;
 
@@ -52,9 +63,38 @@ static void poll_buttons() {
     counter2++;
     counter2 *= butt2;
 
+
     if (counter2 == INTERRUPT_FREQ*3) // 3 seconds
         power_off();
 
+
+    static bool prev_butt1 = 0;
+    static bool prev_butt2 = 0;
+    static bool both_pressed = 0;
+
+    if (butt1 && butt2)
+        both_pressed = 1;
+
+    if (butt1 == 0 && prev_butt1 == 1) {
+        if (!both_pressed)
+            occurred_events |= EVENT_RIGHT_BUTTON;
+        else if (butt2 == 0) {
+            occurred_events |= EVENT_BOTH_BUTTONS;
+            both_pressed = 0;
+        }
+    }
+
+    if (butt2 == 0 && prev_butt2 == 1) {
+        if (!both_pressed)
+            occurred_events |= EVENT_LEFT_BUTTON;
+        else if (butt1 == 0) {
+            occurred_events |= EVENT_BOTH_BUTTONS;
+            both_pressed = 0;
+        }
+    }
+
+    prev_butt1 = butt1;
+    prev_butt2 = butt2;
 }
 
 static volatile uint16_t local_matrix[5] = {
