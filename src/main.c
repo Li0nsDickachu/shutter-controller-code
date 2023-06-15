@@ -1,24 +1,31 @@
-#include <avr/io.h>
-#include <avr/power.h>
-#include <util/delay.h>
+#include <stdint.h>
+#include "hardware.h"
+
 
 int main(void) {
-    clock_prescale_set(clock_div_1);
+    hardware_init();
 
-    DDRC |= _BV(DDC1);
-    DDRD |= _BV(DDD6);
-    DDRB |= _BV(DDB6);
-    PORTD &= ~_BV(PORTD7);
-    PORTB |= _BV(PORTB6);
-
+    uint64_t hello[5] = {
+        0b0000000001001011110100001000011110000000000,
+        0b0000000001001010000100001000010010000000000,
+        0b0000000001111011110100001000010010000000000,
+        0b0000000001001010000100001000010010000000000,
+        0b0000000001001011110111101111011110000000000
+    };
 
     while(1) {
-        PORTC |= _BV(PORTC1);
-
-        _delay_ms(500);
-
-        PORTC &= ~_BV(PORTC1);
-
-        _delay_ms(500);
+        for (int i = 0; i < 64 - 9 - 6; i++) {
+            uint16_t buffer[5] = {
+                hello[0] >> (64 - 9 - (i + 6)),
+                hello[1] >> (64 - 9 - (i + 6)),
+                hello[2] >> (64 - 9 - (i + 6)),
+                hello[3] >> (64 - 9 - (i + 6)),
+                hello[4] >> (64 - 9 - (i + 6))
+            };
+            put_matrix(buffer);
+            delay_ms(400);
+        }
     }
 }
+
+

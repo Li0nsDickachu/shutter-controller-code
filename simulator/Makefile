@@ -1,20 +1,21 @@
-CFLAGS = -O0 -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -mmcu=atmega328p -DF_CPU=8000000L -std=c99
-CC = avr-gcc
-SRCDIR = ./src
+CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c99
+CC = gcc
+SRCDIR = ../src
 BUILDDIR = ./build
 
 $(shell mkdir -p $(BUILDDIR))
 
 OBJS = \
 	   $(BUILDDIR)/main.o \
-	   $(BUILDDIR)/hardware.o
+	   $(BUILDDIR)/font.o \
+	   $(BUILDDIR)/hardware_sim.o
 
-
-$(BUILDDIR)/main.hex: $(BUILDDIR)/main
-	objcopy -O ihex -R .eeprom $^ $@
 
 $(BUILDDIR)/main: $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@
+
+$(BUILDDIR)/hardware_sim.o: hardware_sim.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
