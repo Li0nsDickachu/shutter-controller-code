@@ -1,4 +1,4 @@
-CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c99
+CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c99 -lraylib -I../src
 CC = gcc
 SRCDIR = ../src
 BUILDDIR = ./build
