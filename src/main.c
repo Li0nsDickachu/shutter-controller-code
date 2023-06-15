@@ -1,30 +1,23 @@
 #include <stdint.h>
 #include "hardware.h"
+#include "font.h"
 
 
 int main(void) {
     hardware_init();
 
-    uint64_t hello[5] = {
-        0b0000000001001011110100001000011110000000000,
-        0b0000000001001010000100001000010010000000000,
-        0b0000000001111011110100001000010010000000000,
-        0b0000000001001010000100001000010010000000000,
-        0b0000000001001011110111101111011110000000000
-    };
 
+    int i = 9;
     while(1) {
-        for (int i = 0; i < 64 - 9 - 6; i++) {
-            uint16_t buffer[5] = {
-                hello[0] >> (64 - 9 - (i + 6)),
-                hello[1] >> (64 - 9 - (i + 6)),
-                hello[2] >> (64 - 9 - (i + 6)),
-                hello[3] >> (64 - 9 - (i + 6)),
-                hello[4] >> (64 - 9 - (i + 6))
-            };
-            put_matrix(buffer);
-            delay_ms(400);
-        }
+        uint16_t matrix[5] = {};
+
+        put_string("AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz", i, wide_font, matrix);
+
+        put_matrix(matrix);
+
+        delay_ms(400);
+
+        i--;
     }
 }
 

@@ -7,6 +7,7 @@ $(shell mkdir -p $(BUILDDIR))
 
 OBJS = \
 	   $(BUILDDIR)/main.o \
+	   $(BUILDDIR)/font.o \
 	   $(BUILDDIR)/hardware.o
 
 

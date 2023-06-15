@@ -15,8 +15,8 @@ void hardware_init() {
     DDRD = 0b11111111;
 
     TCNT0 = 0;
-    OCR0A = 200;
-    TCCR0A = 0x00;
+    OCR0A = 255;
+    TCCR0A = 0x0;
     TCCR0B |= (1<<CS00) | (1<<CS01);
     TIMSK0 |= (1<<TOIE0) | (1 << OCIE0A);
 
