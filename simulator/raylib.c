@@ -37,7 +37,7 @@ void *raylib_thread(void *vargp) {
                     for (int i = 70; i > 0; i-= 2)
                         DrawCircleV((Vector2){x*50 + 50, y*50 + 50}, i, (Color){255, 30, 30, 10});
                     for (int i = 30; i > 0; i--)
-                        DrawCircleV((Vector2){x*50 + 50, y*50 + 50}, i, (Color){255, 82+(30-i), 35, 10});
+                        DrawCircleV((Vector2){x*50 + 50, y*50 + 50}, i, (Color){255, 82+(30-i), 35, 40});
                 }
             }
         }

@@ -66,6 +66,7 @@ Settings list is as follows:
 
 = Edit setting <setting>
 == Integer
+#image("graphics/int_inf.svg", width: 80%)
 #image("graphics/int1.svg", width: 80%)
 #image("graphics/int2.svg", width: 80%)
 #image("graphics/int10.svg", width: 80%)

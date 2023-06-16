@@ -1,4 +1,4 @@
-CFLAGS = -O0 -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -mmcu=atmega328p -DF_CPU=8000000L -std=c99
+CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -mmcu=atmega328p -DF_CPU=8000000L -std=c11
 CC = avr-gcc
 SRCDIR = ./src
 BUILDDIR = ./build
@@ -8,6 +8,8 @@ $(shell mkdir -p $(BUILDDIR))
 OBJS = \
 	   $(BUILDDIR)/main.o \
 	   $(BUILDDIR)/font.o \
+	   $(BUILDDIR)/counters.o \
+	   $(BUILDDIR)/Assert.o \
 	   $(BUILDDIR)/hardware.o
 
 

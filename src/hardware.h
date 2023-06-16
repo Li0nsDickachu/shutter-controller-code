@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 
 void put_matrix(uint16_t matrix[5]);
 
@@ -13,4 +14,5 @@ enum events {
 };
 
 enum events get_and_clear_button_events();
+
 

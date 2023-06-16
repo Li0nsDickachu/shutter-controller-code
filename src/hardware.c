@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include "defines.h"
 #include "hardware.h"
+#include "font.h"
 
 void delay_ms(double ms) {
     _delay_ms(ms);

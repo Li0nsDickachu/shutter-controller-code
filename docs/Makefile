@@ -1,4 +1,4 @@
-ui_mockup.pdf: ui_mockup.typ graphics/home.svg graphics/setup.svg graphics/int2.svg graphics/int1.svg graphics/int10.svg graphics/int100.svg graphics/int169.svg graphics/int550.svg graphics/time.09.svg graphics/time9m30.svg graphics/time24m.svg graphics/time9h30m.svg
+ui_mockup.pdf: ui_mockup.typ graphics/home.svg graphics/setup.svg graphics/int2.svg graphics/int1.svg graphics/int10.svg graphics/int100.svg graphics/int169.svg graphics/int550.svg graphics/time.09.svg graphics/time9m30.svg graphics/time24m.svg graphics/time9h30m.svg graphics/int_inf.svg
 	typst compile $<
 
 graphics/home.svg: Makefile
@@ -107,6 +107,15 @@ graphics/time9h30m.svg: Makefile
 		111000111 \
 		001010001 \
 		111010111 \
+		$@
+
+graphics/int_inf.svg: Makefile
+	python3 gen_matrix.py \
+		011000110 \
+		100101001 \
+		100010001 \
+		100101001 \
+		011000110 \
 		$@
 
 watch:

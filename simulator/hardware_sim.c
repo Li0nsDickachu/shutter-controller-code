@@ -11,7 +11,6 @@ _Atomic bool events_busy = false;
 volatile static uint16_t global_matrix[5] = {};
 pthread_mutex_t mutex;
 
-
 static void poll_buttons(bool butt2, bool butt1) {
     static bool prev_butt1 = 0;
     static bool prev_butt2 = 0;

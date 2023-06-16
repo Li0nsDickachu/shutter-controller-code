@@ -1,4 +1,4 @@
-CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c99 -lraylib -I../src
+CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c99 -lraylib -I../src -DIN_SIMULATOR -std=c11
 CC = gcc
 SRCDIR = ../src
 BUILDDIR = ./build
@@ -8,6 +8,8 @@ $(shell mkdir -p $(BUILDDIR))
 OBJS = \
 	   $(BUILDDIR)/main.o \
 	   $(BUILDDIR)/font.o \
+	   $(BUILDDIR)/counters.o \
+	   $(BUILDDIR)/Assert.o \
 	   $(BUILDDIR)/hardware_sim.o
 
 
@@ -20,9 +22,11 @@ $(BUILDDIR)/hardware_sim.o: hardware_sim.c
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-flash: $(BUILDDIR)/main
-	avrdude -p m328p -c usbtiny -U $<
-
 clean:
 	rm -rf $(BUILDDIR)
+
+.PHONY: run
+
+run: $(BUILDDIR)/main
+	$(BUILDDIR)/main
 
