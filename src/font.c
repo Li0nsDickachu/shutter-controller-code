@@ -26,6 +26,14 @@ int put_string(char* string, int x_coord, font_character_t font[127], uint16_t m
     return x_coord;
 }
 
+const font_character_t character_super_narrow_zero = {1, {
+    0b0,
+    0b0,
+    0b1,
+    0b0,
+    0b0
+}};
+
 const font_character_t character_infinity[2] = {
     {8, {
     0b01100011,
