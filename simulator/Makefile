@@ -1,4 +1,4 @@
-CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c99 -lraylib -I../src -DIN_SIMULATOR -std=c11
+CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c11 -lraylib -I../src -DIN_SIMULATOR -std=c11
 CC = gcc
 SRCDIR = ../src
 BUILDDIR = ./build

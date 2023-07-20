@@ -14,6 +14,8 @@ void delay_ms(double ms) {
 }
 
 void hardware_init() {
+    DDR_SHUTTER |= 1 << PIN_SHUTTER;
+
     DDR_POWER |= 1 << PIN_POWER;
     PORT_POWER |= 1 << PIN_POWER;
 
@@ -34,6 +36,14 @@ void hardware_init() {
     TIMSK0 |= (1<<TOIE0) | (1 << OCIE0A);
 
     sei();
+}
+
+void shutter_button(bool dir) {
+    if (dir == BUTTON_DOWN) {
+        PORT_SHUTTER |= 1 << PIN_SHUTTER;
+    } else {
+        PORT_SHUTTER &= ~(1 << PIN_SHUTTER);
+    }
 }
 
 void power_off() {
@@ -106,7 +116,7 @@ static volatile uint16_t local_matrix[5] = {
     0b000000000
 };
 
-static inline put_cols(uint16_t cols) {
+static inline void put_cols(uint16_t cols) {
     // sorry for the magic numbers
     uint8_t portc = (cols & 0b11111) << 1;
     uint8_t portd = (cols >> 5) & 0b000001111;
@@ -119,7 +129,7 @@ static inline put_cols(uint16_t cols) {
     PORTD |= portd;
 }
 
-static inline put_rows(uint8_t rows) {
+static inline void put_rows(uint8_t rows) {
     uint8_t portdmask = 0xf0;
     uint8_t portcmask = 0x01;
     PORTC |= portcmask;

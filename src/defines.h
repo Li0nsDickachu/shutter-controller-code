@@ -16,3 +16,8 @@
 #define PORT_BUTT2 PORTB
 #define INPUT_BUTT2 PINB
 #define DDR_BUTT2 DDRB
+
+#define PIN_SHUTTER 0
+#define PORT_SHUTTER PORTB
+#define DDR_SHUTTER DDRB
+

@@ -11,6 +11,14 @@ _Atomic bool events_busy = false;
 volatile static uint16_t global_matrix[5] = {};
 pthread_mutex_t mutex;
 
+void shutter_button(bool dir) {
+    if (dir == BUTTON_DOWN) {
+        printf("Shutter button down\n");
+    } else {
+        printf("Shutter button up\n");
+    }
+}
+
 static void poll_buttons(bool butt2, bool butt1) {
     static bool prev_butt1 = 0;
     static bool prev_butt2 = 0;
@@ -26,7 +34,6 @@ static void poll_buttons(bool butt2, bool butt1) {
         } else if (butt2 == 0) {
             occurred_events |= EVENT_BOTH_BUTTONS;
             both_pressed = 0;
-            printf("both\n");
         }
     }
 
@@ -36,7 +43,6 @@ static void poll_buttons(bool butt2, bool butt1) {
         else if (butt1 == 0) {
             occurred_events |= EVENT_BOTH_BUTTONS;
             both_pressed = 0;
-            printf("both\n");
         }
     }
     pthread_mutex_unlock(&mutex);
@@ -52,7 +58,9 @@ void *raylib_thread(void *vargp) {
     const int screenWidth = 500;
     const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "Camera shutter controller");
+
+    InitWindow(screenWidth, screenHeight, "sim");
+    SetWindowPosition(2300, 100);
 
     Vector2 ballPosition = { (float)screenWidth/2, (float)screenHeight/2 };
 
@@ -79,6 +87,8 @@ void *raylib_thread(void *vargp) {
                         DrawCircleV((Vector2){x*50 + 50, y*50 + 50}, i, (Color){255, 30, 30, 3});
                     for (int i = 20; i > 0; i--)
                         DrawCircleV((Vector2){x*50 + 50, y*50 + 50}, i, (Color){255, 82+(30-i), 55, 30});
+                    for (int i = 12; i > 0; i--)
+                        DrawCircleV((Vector2){x*50 + 50, y*50 + 50}, i, (Color){255, 255, 255, 20});
                 }
             }
         }

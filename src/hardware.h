@@ -15,4 +15,7 @@ enum events {
 
 enum events get_and_clear_button_events();
 
+void shutter_button(bool dir);
 
+#define BUTTON_DOWN 1
+#define BUTTON_UP 0

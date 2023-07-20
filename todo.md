@@ -5,5 +5,6 @@ Implement settings menu
 Implement long press of button
 Implement fancy counting display methods
 Implement actual timer
+Release and document
 
 

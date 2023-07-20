@@ -1,32 +1,36 @@
+#include <string.h>
+#include <avr/pgmspace.h>
 #include "font.h"
 #include "defines.h"
 
-int put_character(font_character_t character, int x_coord, uint16_t matrix[5]) {
+int put_character(const font_character_t *character, int x_coord, uint16_t matrix[5]) {
     for (int y = 0; y < MATRIX_HEIGHT; y++) {
-        int64_t shift = (MATRIX_WIDTH - character.width) - x_coord;
+        int64_t shift = (MATRIX_WIDTH - pgm_read_byte(&(character->width))) - x_coord;
 
         if (shift >= 16 || -shift >= 16){
             break;
         }
 
+        uint8_t line = pgm_read_byte(&(character->bitmap[y]));
+
         if (shift > 0)
-            matrix[y] |= (uint16_t)character.bitmap[y] << shift;
+            matrix[y] |= line << shift;
         else
-            matrix[y] |= (uint16_t)character.bitmap[y] >> -shift;
+            matrix[y] |= line >> -shift;
     }
 
-    return x_coord + character.width + 1;
+    return x_coord + pgm_read_byte(&(character->width)) + 1;
 }
 
-int put_string(char* string, int x_coord, font_character_t font[127], uint16_t matrix[5]) {
-    for (int i = 0; i < strlen(string); i++) {
-        x_coord = put_character(font[string[i]], x_coord, matrix);
+int put_string(char* const string, int x_coord, const font_character_t *font, uint16_t matrix[5]) {
+    for (size_t i = 0; i < strlen(string); i++) {
+        x_coord = put_character(&font[(int)string[i]], x_coord, matrix);
     }
 
     return x_coord;
 }
 
-const font_character_t character_super_narrow_zero = {1, {
+const font_character_t character_super_narrow_zero PROGMEM = {1, {
     0b0,
     0b0,
     0b1,
@@ -34,7 +38,7 @@ const font_character_t character_super_narrow_zero = {1, {
     0b0
 }};
 
-const font_character_t character_infinity[2] = {
+const font_character_t character_infinity[2] PROGMEM = {
     {8, {
     0b01100011,
     0b10010100,
@@ -50,9 +54,16 @@ const font_character_t character_infinity[2] = {
     }}
 };
 
-const font_character_t narrow_font[127] = {
-    {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
-    {3, {
+const font_character_t narrow_font[127] PROGMEM = {
+    {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
+    {1,{//.
+    0b0,
+    0b0,
+    0b0,
+    0b0,
+    0b1
+    }}, {},
+    {3, {//0
     0b111,
     0b101,
     0b101,
@@ -115,7 +126,7 @@ const font_character_t narrow_font[127] = {
     }}
 };
 
-const font_character_t wide_font[127] = {
+const font_character_t wide_font[127] PROGMEM = {
     {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},
     {2, {}//SPACE
     },{},{},{},{},{},{},{},{},{},{},{},{},
@@ -297,10 +308,10 @@ const font_character_t wide_font[127] = {
     0b10001,
     0b01110
     }},{4, {//P
-    0b1111,
+    0b1110,
     0b1001,
-    0b1111,
-    0b1000,
+    0b1001,
+    0b1110,
     0b1000
     }},{4, {//Q
     0b0110,
@@ -519,5 +530,12 @@ const font_character_t wide_font[127] = {
     0b0010,
     0b0100,
     0b1111
-    }}
+    }}, {},
+    {1, {//|
+    0b1,
+    0b1,
+    0b0,
+    0b1,
+    0b1
+    }},
 };
