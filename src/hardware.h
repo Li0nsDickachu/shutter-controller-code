@@ -1,5 +1,6 @@
 #pragma once
 #include <stdbool.h>
+#include <stdint.h>
 
 void put_matrix(uint16_t matrix[5]);
 
@@ -19,3 +20,10 @@ void shutter_button(bool dir);
 
 #define BUTTON_DOWN 1
 #define BUTTON_UP 0
+
+#ifdef IN_SIMULATOR
+#define PROGMEM
+uint8_t pgm_read_byte(uint8_t *address);
+#else
+#include <avr/pgmspace.h>
+#endif

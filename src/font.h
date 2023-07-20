@@ -1,6 +1,6 @@
 #pragma once
+#include "hardware.h"
 #include <stdint.h>
-#include <avr/pgmspace.h>
 
 typedef struct {
     int width;

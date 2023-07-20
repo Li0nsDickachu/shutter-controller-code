@@ -11,6 +11,10 @@ _Atomic bool events_busy = false;
 volatile static uint16_t global_matrix[5] = {};
 pthread_mutex_t mutex;
 
+uint8_t pgm_read_byte(uint8_t *address) {
+    return *address;
+}
+
 void shutter_button(bool dir) {
     if (dir == BUTTON_DOWN) {
         printf("Shutter button down\n");

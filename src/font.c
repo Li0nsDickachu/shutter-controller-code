@@ -1,6 +1,6 @@
 #include <string.h>
-#include <avr/pgmspace.h>
 #include "font.h"
+#include "hardware.h"
 #include "defines.h"
 
 int put_character(const font_character_t *character, int x_coord, uint16_t matrix[5]) {
