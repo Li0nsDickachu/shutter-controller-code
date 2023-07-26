@@ -64,7 +64,6 @@ void *raylib_thread(void *vargp) {
 
 
     InitWindow(screenWidth, screenHeight, "sim");
-    SetWindowPosition(2300, 100);
 
     Vector2 ballPosition = { (float)screenWidth/2, (float)screenHeight/2 };
 
