@@ -1,4 +1,5 @@
-CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c11 -lraylib -I../src -DIN_SIMULATOR -std=c11
+CFLAGS = -w -ffunction-sections -fdata-sections -fno-fat-lto-objects -MMD -std=c11 -I../src -DIN_SIMULATOR -std=c11 -lraylib -lpthread
+
 CC = gcc
 SRCDIR = ../src
 BUILDDIR = ./build
@@ -14,7 +15,7 @@ OBJS = \
 
 
 $(BUILDDIR)/main: $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $^ $(CFLAGS) -o $@
 
 $(BUILDDIR)/hardware_sim.o: hardware_sim.c
 	$(CC) $(CFLAGS) -c $< -o $@
