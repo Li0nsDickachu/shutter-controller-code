@@ -9,9 +9,11 @@ void hardware_init();
 void delay_ms(double ms);
 
 enum events {
-    EVENT_LEFT_BUTTON = 1 << 0,
-    EVENT_RIGHT_BUTTON = 1 << 1,
-    EVENT_BOTH_BUTTONS = 1 << 2
+    EVENT_LEFT_BUTTON_UP = 1 << 0,
+    EVENT_RIGHT_BUTTON_UP = 1 << 1,
+    EVENT_BOTH_BUTTONS_UP = 1 << 2,
+    EVENT_LEFT_BUTTON_DOWN = 1 << 3,
+    EVENT_RIGHT_BUTTON_DOWN = 1 << 4
 };
 
 enum events get_and_clear_button_events();
@@ -23,7 +25,7 @@ void shutter_button(bool dir);
 
 #ifdef IN_SIMULATOR
 #define PROGMEM
-uint8_t pgm_read_byte(uint8_t *address);
+uint8_t pgm_read_byte(const uint8_t *address);
 #else
 #include <avr/pgmspace.h>
 #endif

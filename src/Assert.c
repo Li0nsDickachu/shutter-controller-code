@@ -1,6 +1,7 @@
 #include "font.h"
 #include "hardware.h"
 #include <string.h>
+#include <stdio.h>
 
 void Assert(bool condition, char* debug_message) {
     if (!condition) {

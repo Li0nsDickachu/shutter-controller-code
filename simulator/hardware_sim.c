@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <stdbool.h>
 #include "raylib.h"
@@ -11,7 +12,7 @@ _Atomic bool events_busy = false;
 volatile static uint16_t global_matrix[5] = {};
 pthread_mutex_t mutex;
 
-uint8_t pgm_read_byte(uint8_t *address) {
+uint8_t pgm_read_byte(const uint8_t *address) {
     return *address;
 }
 
@@ -32,20 +33,24 @@ static void poll_buttons(bool butt2, bool butt1) {
         both_pressed = 1;
 
     pthread_mutex_lock(&mutex);
-    if (butt1 == 0 && prev_butt1 == 1) {
+    if (butt1 == 1 && prev_butt1 == 0) {
+        occurred_events |= EVENT_RIGHT_BUTTON_DOWN;
+    } else if (butt1 == 0 && prev_butt1 == 1) {
         if (!both_pressed) {
-            occurred_events |= EVENT_RIGHT_BUTTON;
+            occurred_events |= EVENT_RIGHT_BUTTON_UP;
         } else if (butt2 == 0) {
-            occurred_events |= EVENT_BOTH_BUTTONS;
+            occurred_events |= EVENT_BOTH_BUTTONS_UP;
             both_pressed = 0;
         }
     }
 
-    if (butt2 == 0 && prev_butt2 == 1) {
+    if (butt2 == 1 && prev_butt2 == 0) {
+        occurred_events |= EVENT_LEFT_BUTTON_DOWN;
+    } else if (butt2 == 0 && prev_butt2 == 1) {
         if (!both_pressed)
-            occurred_events |= EVENT_LEFT_BUTTON;
+            occurred_events |= EVENT_LEFT_BUTTON_UP;
         else if (butt1 == 0) {
-            occurred_events |= EVENT_BOTH_BUTTONS;
+            occurred_events |= EVENT_BOTH_BUTTONS_UP;
             both_pressed = 0;
         }
     }
@@ -128,7 +133,7 @@ void hardware_init() {
 }
 
 void delay_ms(double ms) {
-    usleep((uint64_t)(ms * 1000));
+    sleep((uint64_t)(ms * 1000));
 }
 
 enum events get_and_clear_button_events() {

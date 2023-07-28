@@ -86,20 +86,24 @@ static void poll_buttons() {
     if (butt1 && butt2)
         both_pressed = 1;
 
-    if (butt1 == 0 && prev_butt1 == 1) {
+    if (butt1 == 1 && prev_butt1 == 0) {
+        occurred_events |= EVENT_RIGHT_BUTTON_DOWN;
+    } else if (butt1 == 0 && prev_butt1 == 1) {
         if (!both_pressed)
-            occurred_events |= EVENT_RIGHT_BUTTON;
+            occurred_events |= EVENT_RIGHT_BUTTON_UP;
         else if (butt2 == 0) {
-            occurred_events |= EVENT_BOTH_BUTTONS;
+            occurred_events |= EVENT_BOTH_BUTTONS_UP;
             both_pressed = 0;
         }
     }
 
-    if (butt2 == 0 && prev_butt2 == 1) {
+    if (butt2 == 1 && prev_butt2 == 0) {
+        occurred_events |= EVENT_LEFT_BUTTON_DOWN;
+    } else if (butt2 == 0 && prev_butt2 == 1) {
         if (!both_pressed)
-            occurred_events |= EVENT_LEFT_BUTTON;
+            occurred_events |= EVENT_LEFT_BUTTON_UP;
         else if (butt1 == 0) {
-            occurred_events |= EVENT_BOTH_BUTTONS;
+            occurred_events |= EVENT_BOTH_BUTTONS_UP;
             both_pressed = 0;
         }
     }

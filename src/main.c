@@ -21,15 +21,15 @@ state_t screen_main(state_t state) {
 
         enum events events = get_and_clear_button_events();
 
-        if (events & EVENT_BOTH_BUTTONS) {
+        if (events & EVENT_BOTH_BUTTONS_UP) {
             state.screen = screen_settings;
             return state;
         }
-        if (events & EVENT_RIGHT_BUTTON) {
+        if (events & EVENT_RIGHT_BUTTON_UP) {
             state.current_profile += 1;
             state.current_profile %= 10;
         }
-        if (events & EVENT_LEFT_BUTTON) {
+        if (events & EVENT_LEFT_BUTTON_UP) {
             shutter_button(BUTTON_DOWN);
             delay_ms(100);
             shutter_button(BUTTON_UP);
@@ -47,15 +47,15 @@ void ns_screen_modify_setting(int *seconds_or_int, int *ms, int min, int max, en
     while (1) {
         enum events events = get_and_clear_button_events();
 
-        if (events & EVENT_RIGHT_BUTTON) {
+        if (events & EVENT_RIGHT_BUTTON_UP) {
             *seconds_or_int = alter_integer(min, max, UP, *seconds_or_int);
             display_integer(*seconds_or_int);
         }
-        if (events & EVENT_LEFT_BUTTON) {
+        if (events & EVENT_LEFT_BUTTON_UP) {
             *seconds_or_int = alter_integer(min, max, DOWN, *seconds_or_int);
             display_integer(*seconds_or_int);
         }
-        if (events & EVENT_BOTH_BUTTONS) {
+        if (events & EVENT_BOTH_BUTTONS_UP) {
             return;
         }
     }
@@ -93,7 +93,7 @@ state_t screen_settings(state_t state) {
         //////////////////////
         enum events events = get_and_clear_button_events();
 
-        if (events & EVENT_RIGHT_BUTTON) {
+        if (events & EVENT_RIGHT_BUTTON_UP) {
             settings_ind++;
             if (settings_ind >= settings_size) {
                 state.screen = screen_main;
@@ -102,10 +102,10 @@ state_t screen_settings(state_t state) {
                 x = 0;
                 i = 0;
             }
-        } else if (events & EVENT_LEFT_BUTTON) {
+        } else if (events & EVENT_LEFT_BUTTON_UP) {
             int value = 0;
             ns_screen_modify_setting(&value, NULL, INFINITY, 990, VALUE_INT);
-        } else if (events & EVENT_BOTH_BUTTONS) {
+        } else if (events & EVENT_BOTH_BUTTONS_UP) {
             state.screen = screen_main;
             return state;
         }
@@ -119,6 +119,20 @@ state_t screen_settings(state_t state) {
 
 int main(void) {
     hardware_init();
+    int pos = 0;
+    while (1) {
+        enum events events = get_and_clear_button_events();
+
+        if (events & EVENT_LEFT_BUTTON_DOWN) {
+            pos++;
+        } if (events & EVENT_RIGHT_BUTTON_DOWN) {
+            pos--;
+        }
+
+        uint16_t matrix[6] = {};
+        matrix[3] = 1 << pos;
+        put_matrix(matrix);
+    }
 
     state_t current_state = {
         screen_main,
