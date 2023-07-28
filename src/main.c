@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include "hardware.h"
 #include "font.h"
+#include "snake.h"
 #include "counters.h"
 
 typedef struct state {
@@ -119,20 +120,8 @@ state_t screen_settings(state_t state) {
 
 int main(void) {
     hardware_init();
-    int pos = 0;
-    while (1) {
-        enum events events = get_and_clear_button_events();
 
-        if (events & EVENT_LEFT_BUTTON_DOWN) {
-            pos++;
-        } if (events & EVENT_RIGHT_BUTTON_DOWN) {
-            pos--;
-        }
-
-        uint16_t matrix[6] = {};
-        matrix[3] = 1 << pos;
-        put_matrix(matrix);
-    }
+    snake();
 
     state_t current_state = {
         screen_main,

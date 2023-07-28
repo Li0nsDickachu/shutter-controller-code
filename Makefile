@@ -10,6 +10,8 @@ OBJS = \
 	   $(BUILDDIR)/font.o \
 	   $(BUILDDIR)/counters.o \
 	   $(BUILDDIR)/Assert.o \
+	   $(BUILDDIR)/utils.o \
+	   $(BUILDDIR)/snake.o \
 	   $(BUILDDIR)/hardware.o
 
 
